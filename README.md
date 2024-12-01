@@ -2,18 +2,18 @@
 
 Run your scripts programmatically with React.
 
-Just me experimenting with custom renderers.
+Just me experimenting with custom renderers and learning one thing or two about React.
 
 Scripter is a custom React renderer that allows you to build scripts declaratively using React components. It provides a powerful way to handle network requests, file operations, script execution, and more in a composable manner.
 
 ## Installation
 
 ```bash
-npm install scripter
+npm install scripter-react
 # or
-yarn add scripter
+yarn add scripter-react
 # or
-pnpm add scripter
+pnpm add scripter-react
 ```
 
 ## Local installation
@@ -24,16 +24,55 @@ pnpm build && pnpm pack
 
 Scripter comes with a set of Components that I developed for my use cases, but can be expanded by developing your own components for your own use cases (in the `./src/tutorial` folder a nice guide to build your following the architecture), and of course contributions are more than welcomed.
 
-## Example: Simple Example
+## Give it a try
 
-Usages can go from simple watchers
+Scaffold a new typescript project
+
+```bash
+pnpm init && tsc --init
+```
+
+add `jsx` option in the compilerOptions
+
+```js
+{
+  jsx: "react-jsx";
+}
+```
+
+Add the following scripts to your package.json
+
+```js
+{
+  "start": "ts-node src/index.tsx",
+  "build": "tsc",
+}
+```
+
+install scripter
+
+```bash
+pnpm add scripter-react
+```
+
+Create a file (`./src/index.tsx`) and add the following content
 
 ```tsx
-import { render } from "./Renderer";
-import { TaskProvider } from "./ScriptBuilder";
-import { Log, LogGroup } from "./src/Log";
-import { Npm, NpmRunSuccess } from "./src/Npm";
-import { Watch, WatchSuccess } from "./src/Watch";
+/**
+ * A simple watcher that executes a script at file change
+ *
+ * */
+import React from "react";
+import {
+  Log,
+  LogGroup,
+  Npm,
+  NpmRunSuccess,
+  render,
+  TaskProvider,
+  Watch,
+  WatchSuccess,
+} from "scripter-react";
 
 const TsWatcher = () => (
   <TaskProvider>
@@ -61,21 +100,34 @@ const TsWatcher = () => (
 render(<TsWatcher />);
 ```
 
-to more complex ones
+Run the file
 
-## Example: Git Branch Cleanup
+```bash
+pnpm start
+## Modify or create new files in src directory
+```
 
-Here's a practical example that helps you clean up old Git branches by checking if they've been merged and when they were last updated:
+---
+
+## Example: Simple Example
+
+Usages can go from simple watchers to more complex ones.
+Here's an example that helps you clean up old Git branches by checking if they've been merged.
 
 ```tsx
-import { useEffect, useState } from "react";
-import { render } from "../../Renderer";
-import { TaskProvider } from "../../ScriptBuilder";
-import { Log, LogGroup } from "../Log";
-import { Prompt, PromptSuccess } from "../Prompt";
-import { Shell, ShellSuccess } from "../Shell";
-import { Transform } from "../Transform";
-import { normalLogger } from "../utils/logger";
+import React, { useEffect, useState } from "react";
+import {
+  render,
+  TaskProvider,
+  Log,
+  LogGroup,
+  Prompt,
+  PromptSuccess,
+  Shell,
+  ShellSuccess,
+  Transform,
+  normalLogger,
+} from "scripter-react";
 
 const BranchCleanup = () => {
   const [branches, setBranches] = useState<string[]>([]);
@@ -197,4 +249,5 @@ const PromptStatus = () => {
 };
 ```
 
-Please report any bug. Still fighting with infinite rendering ;)
+Please be gentle. Still fighting with infinite rendering and typescript configs ;)
+Any help is more than welcomed!

@@ -30,7 +30,7 @@ interface ScriptRunSuccess {
 }
 
 interface ScriptRunError {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface ScriptRunLoading {
@@ -141,7 +141,6 @@ export function Npm({
             loading: false,
           }));
           await onError?.(finalError);
-          throw finalError;
         }
       });
     };
