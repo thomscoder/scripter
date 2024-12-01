@@ -1,7 +1,7 @@
 import { render } from "../../Renderer";
 import { TaskProvider } from "../../ScriptBuilder";
 import { FileError, FileReader, FileReading, FileSuccess } from "../FileReader";
-import { Log, LogGroup } from "../Log";
+import { Log, LogError, LogGroup, LogSuccess } from "../Log";
 import { Transform } from "../Transform";
 import { normalLogger } from "../utils/logger";
 
@@ -15,7 +15,9 @@ const FileReaderExample = () => {
           </FileReading>
 
           <FileError>
-            <Log content="Failed to read file" />
+            {(err: Error) => {
+              return <LogError content={err.message} />;
+            }}
           </FileError>
 
           <FileSuccess>{(content) => <Log content={content} />}</FileSuccess>
@@ -23,28 +25,44 @@ const FileReaderExample = () => {
       </LogGroup>
 
       <LogGroup label="file reader with transformation">
-        <FileReader
-          path="./data.json"
-          format="json"
-          transform={(data: any) => {
-            // your transform function here
-            normalLogger(data);
-            return data;
-          }}
-        >
-          {(transformedData) => <Log content={transformedData} format="json" />}
+        <FileReader path="./src/examples/BranchCleanup.tsx">
+          <FileError>
+            {(err: Error) => {
+              return <LogError content={err.message} />;
+            }}
+          </FileError>
+          <FileSuccess>
+            {(f) => {
+              return (
+                <Transform
+                  input={f}
+                  transform={async (data: string) => {
+                    if (data.length <= 100) {
+                      return data;
+                    }
+                    const truncated = data.slice(0, 100);
+                    return truncated + "...";
+                  }}
+                  onSuccess={async (cont) => {}}
+                >
+                  {(t) => <Log content={t} format="json" />}
+                </Transform>
+              );
+            }}
+          </FileSuccess>
         </FileReader>
       </LogGroup>
 
       <LogGroup label="file reader with logging and callbacks">
         <FileReader
-          path="./large-file.txt"
+          path="./tsconfig.json"
+          format="json"
           logContent
           onSuccess={async (content) => {
-            normalLogger("File read successfully");
+            // normalLogger("File read successfully");
           }}
           onError={async (error) => {
-            console.error("File read failed:", error);
+            // console.error("File read failed:", error);
           }}
         >
           <FileSuccess>
@@ -52,11 +70,11 @@ const FileReaderExample = () => {
               <Transform
                 input={content}
                 transform={(data) => {
-                  normalLogger(data);
+                  normalLogger(data)
                   return data;
                 }}
               >
-                {(upperContent) => <Log content={upperContent} />}
+                {(upperContent) => <LogSuccess content="File read successfully" />}
               </Transform>
             )}
           </FileSuccess>

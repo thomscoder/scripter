@@ -2,8 +2,6 @@ import { readFile } from "fs/promises";
 import { resolve } from "path";
 import React, { createContext, ReactNode, useContext } from "react";
 import { useTask } from "../ScriptBuilder";
-import { Transform } from "./Transform";
-
 
 type FileContent = string | Buffer | ArrayBuffer | null;
 type FileFormat = "text" | "binary" | "json" | "base64";
@@ -24,7 +22,6 @@ interface FileReaderProps {
   children?: ReactNode | ((content: FileContent) => ReactNode);
   onSuccess?: (content: FileContent) => void | Promise<void>;
   onError?: (error: Error) => void | Promise<void>;
-  transform?: (content: FileContent) => any | Promise<any>;
   logContent?: boolean;
 }
 
@@ -46,7 +43,6 @@ export function FileReader({
   children,
   onSuccess,
   onError,
-  transform,
   logContent = false,
 }: FileReaderProps) {
   const [state, setState] = React.useState<FileState>({
@@ -106,14 +102,6 @@ export function FileReader({
   }, [path, format, execute, onSuccess, onError, logContent]);
 
   const renderContent = () => {
-    if (transform && state.content) {
-      return (
-        <Transform input={state.content} transform={transform}>
-          {children}
-        </Transform>
-      );
-    }
-
     return typeof children === "function" ? children(state.content) : children;
   };
 
