@@ -6,6 +6,8 @@ Just me experimenting with custom renderers and learning one thing or two about 
 
 Scripter is a custom React renderer that allows you to build scripts declaratively using React components. It provides a powerful way to handle network requests, file operations, script execution, and more in a composable manner.
 
+<img width="891" alt="Screenshot 2024-12-01 at 5 27 37 PM" src="https://github.com/user-attachments/assets/36ee215a-e442-437e-9948-26b40ac35398">
+
 ## Installation
 
 ```bash
