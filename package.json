@@ -1,15 +1,37 @@
 {
   "name": "scripter",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A React-based scripting library",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\"",
+    "start": "pnpm exec ts-node Renderer.tsx",
+    "isolate": "tsc && node ./dist/Example.js",
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-reconciler": "^0.29.2"
+    "chalk": "^4.1.2",
+    "react-reconciler": "^0.29.2",
+    "uuid": "^11.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.2",
+    "@types/react": "^18.3.12",
+    "@types/uuid": "^10.0.0",
+    "react": "^18.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }
