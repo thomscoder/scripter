@@ -24,6 +24,45 @@ pnpm build && pnpm pack
 
 Scripter comes with a set of Components that I developed for my use cases, but can be expanded by developing your own components for your own use cases (in the `./src/tutorial` folder a nice guide to build your following the architecture), and of course contributions are more than welcomed.
 
+## Example: Simple Example
+
+Usages can go from simple watchers
+
+```tsx
+import { render } from "./Renderer";
+import { TaskProvider } from "./ScriptBuilder";
+import { Log, LogGroup } from "./src/Log";
+import { Npm, NpmRunSuccess } from "./src/Npm";
+import { Watch, WatchSuccess } from "./src/Watch";
+
+const TsWatcher = () => (
+  <TaskProvider>
+    <LogGroup label="TypeScript Build">
+      <Watch path="./src">
+        <WatchSuccess>
+          {(filePath) => {
+            return (
+              <>
+                <Log content={`Changed: ${filePath}`} />
+                <Npm script="build">
+                  <NpmRunSuccess>
+                    {() => <Log content="✨ Build successful" />}
+                  </NpmRunSuccess>
+                </Npm>
+              </>
+            );
+          }}
+        </WatchSuccess>
+      </Watch>
+    </LogGroup>
+  </TaskProvider>
+);
+
+render(<TsWatcher />);
+```
+
+to more complex ones
+
 ## Example: Git Branch Cleanup
 
 Here's a practical example that helps you clean up old Git branches by checking if they've been merged and when they were last updated:

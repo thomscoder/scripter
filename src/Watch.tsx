@@ -70,7 +70,7 @@ export function Watch({
       }
     });
 
-    const watcher = watch(path, async (eventType, filename) => {
+    const watcher = watch(path, { recursive: true }, async (eventType, filename) => {
       if (!filename || !state.active) return;
 
       process.nextTick(async () => {
